@@ -1,2 +1,5 @@
-# mqtt-doorbell
-A simple Linux doorbell container 
+# Simple MQTT Door Bell 
+A simple Linux-based doorbell, which runs in a Docker container and
+plays the mp3 bell ringtone.
+
+
