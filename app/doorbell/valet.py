@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 
 import sys
 import logging
+import playsound
 
 from paho.mqtt.enums import CallbackAPIVersion
 
@@ -26,6 +27,11 @@ def on_disconnect(client, userdata, reason_code, properties):
 
 def on_message(client, userdata, message):
     logger.info("Message Recieved: " + message.payload.decode())
+    try:
+        playsound.playsound("/config/media/classic-doorbell-meloboom.mp3")
+    except Exception as e:
+        logger.error("Error playing sound: %s" % e)
+        logger.exception(e)
 
 
 client = mqtt.Client(callback_api_version=CallbackAPIVersion.VERSION2)
@@ -34,10 +40,8 @@ client.on_message = on_message
 client.username = settings.BROKER_USER
 client.password = settings.BROKER_PASSWORD
 
-
 res_err = client.connect(host=settings.BROKER_SERVER,
                          port=settings.BROKER_PORT)
-
 
 if res_err:
     logger.error("Failed to connect to MQTT server, error %d", res_err)
