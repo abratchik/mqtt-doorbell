@@ -1,6 +1,8 @@
+import os
 from configparser import RawConfigParser
 
-BASE_DIR = "/etc/mqtt-doorbell/"
+BASE_DIR = "/etc/mqtt-doorbell"
+MEDIA_DIR = os.path.join(BASE_DIR, "media")
 CONFIG_FILE = "/etc/mqtt-doorbell/doorbell.conf"
 BROKER_SECTION = 'broker'
 BELL_SECTION = 'bell'
@@ -14,6 +16,7 @@ BROKER_USER = config.get(BROKER_SECTION, "user", fallback="broker_user")
 BROKER_PASSWORD = config.get(BROKER_SECTION, "password", fallback="broker_password")
 BROKER_TOPIC = config.get(BROKER_SECTION, "topic", fallback="doorbell/ring")
 BELL_DEFAULT_RING = config.get(BELL_SECTION, "default_ring", fallback="classic-doorbell-meloboom")
+BELL_DEFAULT_RING_FILENAME = "%s.mp3" % os.path.join(MEDIA_DIR, BELL_DEFAULT_RING)
 BELL_MP3PLAYER_CMD = config.get(BELL_SECTION, 'mp3player_cmd', fallback="mpg123 -qf32768")
 
 

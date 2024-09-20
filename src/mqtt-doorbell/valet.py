@@ -1,10 +1,12 @@
 import json
-
-import paho.mqtt.client as mqtt
-
+import os
 import sys
 import subprocess
 import logging
+import glob
+import random
+
+import paho.mqtt.client as mqtt
 
 from paho.mqtt.enums import CallbackAPIVersion
 
@@ -20,26 +22,35 @@ logger.addHandler(handler)
 
 logger.debug("Logger started")
 
+ringtones = glob.glob(os.path.join(settings.MEDIA_DIR, "*.mp3"))
+
 
 def on_connect(client, userdata, flags, reason_code, properties):
-    logger.info("Connected With Result Code (%s)" % reason_code.getName())
+    logger.info("MQTT connected (%s)" % reason_code.getName())
 
 
 def on_disconnect(client, userdata, reason_code, properties):
-    logger.info("Client Got Disconnected")
+    logger.info("MQTT got disconnected")
 
 
 def on_message(client, userdata, message):
-    logger.info("Message Recieved: " + message.payload.decode())
+
     try:
         payload = json.loads(message.payload.decode())
-        ringtone = payload.get("ringtone", settings.BELL_DEFAULT_RING)
 
-        play_command = "%s %smedia/%s.mp3" % (settings.BELL_MP3PLAYER_CMD,
-                                              settings.BASE_DIR,
-                                              ringtone)
+        logger.info("Message received: " + payload)
+
+        pattern = payload.get("ringtone", settings.BELL_DEFAULT_RING)
+
+        tunes = [r for r in ringtones if pattern in r]
+
+        play_command = "%s %s" % (settings.BELL_MP3PLAYER_CMD,
+                                  random.choice(tunes) if tunes else settings.BELL_DEFAULT_RING_FILENAME)
+
         logger.debug("subprocess.run: %s" % play_command)
+
         subprocess.run(play_command, shell=True)
+
     except Exception as e:
         logger.error("Error playing sound: %s" % e)
         logger.exception(e)
