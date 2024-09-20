@@ -1,0 +1,13 @@
+[Unit]
+Description=MQTT Doorbell Service
+
+[Service]
+WorkingDirectory=/etc/mqtt-doorbell/
+ExecStart=/usr/bin/python3 -m mqtt-doorbell.valet
+Type=simple
+User=user
+Group=group
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

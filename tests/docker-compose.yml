@@ -1,8 +1,10 @@
 services:
   doorbell:
+    image: abratchik/mqtt-doorbell:amd64-latest
+    platform: linux/amd64
     container_name: mqtt-doorbell
     # Берем Dockerfile из каталога app
-    build: app
+    build: src
     # Запускаем production сервер
     command: python -m doorbell.valet
     # Файл содержащий переменные для контейнера
