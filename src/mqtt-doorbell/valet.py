@@ -38,7 +38,7 @@ def on_message(client, userdata, message):
     try:
         payload = json.loads(message.payload.decode())
 
-        logger.info("Message received: " + payload)
+        logger.info("Message received: %s" % payload)
 
         pattern = payload.get("ringtone", settings.BELL_DEFAULT_RING)
 

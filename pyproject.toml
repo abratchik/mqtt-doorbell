@@ -1,6 +1,6 @@
 [project]
 name = "mqtt-doorbell"
-version = "0.1.0"
+version = "0.1.2"
 dependencies = ["paho-mqtt"]
 authors = [
   { name="Alex Bratchik", email="abratchik@gmail.com" },
