@@ -1,4 +1,5 @@
 .idea
 .env
+.pypirc
 /env
 mqtt_doorbell.egg-info/
