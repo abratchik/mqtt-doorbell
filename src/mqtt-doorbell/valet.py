@@ -1,5 +1,6 @@
 import json
 import os
+from pathlib import Path
 import sys
 import subprocess
 import logging
@@ -42,7 +43,7 @@ def on_message(client, userdata, message):
 
         pattern = payload.get("ringtone", settings.BELL_DEFAULT_RING)
 
-        tunes = [r for r in ringtones if pattern in r]
+        tunes = [r for r in ringtones if pattern in Path(r).stem]
 
         play_command = "%s %s" % (settings.BELL_MP3PLAYER_CMD,
                                   random.choice(tunes) if tunes else settings.BELL_DEFAULT_RING_FILENAME)
